@@ -1,0 +1,36 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function isSelf(uid) { return signedIn() && request.auth.uid == uid; }
+    function currentUser() { return get(/databases/$(database)/documents/users/$(request.auth.uid)).data; }
+    function isIssuer() { return signedIn() && currentUser().role == 'ISSUER'; }
+    function isAdmin() { return signedIn() && currentUser().role == 'ADMIN'; }
+    function managesInstitution(institutionId) { return isAdmin() || (isIssuer() && currentUser().institutionId == institutionId); }
+    match /institutions/{institutionId} {
+      allow read: if isAdmin() || (isIssuer() && institutionId == currentUser().institutionId);
+      allow write: if isAdmin();
+    }
+    match /users/{uid} {
+      allow read: if isSelf(uid) || isAdmin() || (isIssuer() && resource.data.institutionId == currentUser().institutionId);
+      allow create: if isSelf(uid) && request.resource.data.role == 'STUDENT';
+      allow update: if isSelf(uid) && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name','updatedAt']);
+    }
+    match /credentials/{credentialId} {
+      allow read: if resource.data.holderUid == request.auth.uid || managesInstitution(resource.data.institutionId);
+      allow create: if managesInstitution(request.resource.data.institutionId) && get(/databases/$(database)/documents/users/$(request.resource.data.holderUid)).data.role == 'STUDENT' && get(/databases/$(database)/documents/users/$(request.resource.data.holderUid)).data.institutionId == request.resource.data.institutionId;
+      allow update, delete: if false;
+    }
+    match /credentialVersions/{versionId} {
+      allow read: if signedIn() && (isAdmin() || managesInstitution(resource.data.institutionId));
+      allow write: if managesInstitution(request.resource.data.institutionId);
+    }
+    match /correctionRequests/{requestId} {
+      allow create: if signedIn() && request.resource.data.studentUid == request.auth.uid;
+      allow read: if signedIn() && (resource.data.studentUid == request.auth.uid || managesInstitution(get(/databases/$(database)/documents/users/$(resource.data.studentUid)).data.institutionId));
+      allow update: if managesInstitution(get(/databases/$(database)/documents/users/$(resource.data.studentUid)).data.institutionId);
+    }
+    match /verificationLogs/{logId} { allow create: if true; allow read: if isIssuer() || isAdmin(); }
+    match /auditLogs/{logId} { allow read: if isAdmin(); allow write: if false; }
+  }
+}

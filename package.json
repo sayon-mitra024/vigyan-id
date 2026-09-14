@@ -1,0 +1,47 @@
+{
+  "name": "vigyan-id",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@noble/curves": "^2.4.0",
+    "@noble/ed25519": "^3.2.0",
+    "@noble/hashes": "^2.4.0",
+    "@tailwindcss/postcss": "latest",
+    "clsx": "latest",
+    "firebase": "latest",
+    "firebase-admin": "latest",
+    "googleapis": "^180.0.0",
+    "jose": "latest",
+    "lucide-react": "latest",
+    "multiformats": "^14.0.5",
+    "next": "latest",
+    "nodemailer": "^10.0.10",
+    "qrcode": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "swr": "^2.5.1",
+    "tailwind-merge": "latest",
+    "uuid": "^14.0.2",
+    "zod": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/nodemailer": "^8.0.1",
+    "@types/qrcode": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@types/uuid": "^10.0.0",
+    "eslint": "latest",
+    "eslint-config-next": "latest",
+    "postcss": "latest",
+    "tailwindcss": "latest",
+    "typescript": "latest"
+  }
+}
