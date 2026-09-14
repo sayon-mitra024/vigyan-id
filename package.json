@@ -2,6 +2,8 @@
   "name": "vigyan-id",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
+  "author": "Sayon Mitra (https://sayonmitra.sayonedu.in/)",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

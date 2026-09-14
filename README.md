@@ -96,4 +96,5 @@ Future work includes hardware-backed key storage, stronger key recovery, interop
 
 ## License and credits
 
-Hackathon prototype by **Sayon Mitra / Team Vigyan**. No separate open-source license has been declared yet; add one before external redistribution.
+Licensed under the [MIT License](./LICENSE).
+Hackathon prototype by **[Sayon Mitra](https://sayonmitra.sayonedu.in/) / Team Vigyan**.
