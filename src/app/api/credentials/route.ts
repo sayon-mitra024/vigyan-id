@@ -55,6 +55,9 @@ export async function POST(request: Request) {
       institution: process.env.DEFAULT_INSTITUTION_NAME ?? "Chandigarh University",
       issuanceDate: issuedAt,
       validUntil,
+      extraSubjectFields: {
+        institutionLogoUrl: process.env.DEFAULT_INSTITUTION_LOGO_URL ?? "/university_logo.png",
+      },
     });
     const signedVc = signCredential(unsigned, issuerKey.privateKey, `${issuerKey.did}#key-1`);
 
